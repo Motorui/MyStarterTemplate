@@ -1,0 +1,51 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<div>
+    <div class="col-md-4">
+        <section>
+            <form id="accout" method="post">
+                <h2>Registar novo utilizador</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating" style="margin:10px">
+                    <input asp-for="Input.Username" class="form-control" autocomplete="Username" aria-required="true" />
+                    <label asp-for="Input.Username" class="form-label"></label>
+                    <span asp-validation-for="Input.Username" class="text-danger"></span>
+                </div>
+                <div class="form-floating" style="margin:10px">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="Email" aria-required="true" />
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating" style="margin:10px">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="Password" aria-required="true" />
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating" style="margin:10px">
+                    <input asp-for="Input.Role" class="form-control" autocomplete="Role" aria-required="true" />
+                    <label asp-for="Input.Role" class="form-label"></label>
+                    <span asp-validation-for="Input.Role" class="text-danger"></span>
+                </div>
+                <div class="form-floating" style="margin:10px">
+                    <select asp-for="Input.UnidadeDeHandling" class="form-control" autocomplete="Unidade de handling" aria-required="true">
+                        <option value="lis">LIS</option>
+                        <option value="opo">OPO</option>
+                        <option value="fao">FAO</option>
+                        <option value="fnc">FNC</option>
+                    </select>
+                    <label asp-for="Input.UnidadeDeHandling" class="form-label">
+                        Unidade de handling
+                    </label>
+                    <span asp-validation-for="Input.UnidadeDeHandling" class="text-danger"></span>
+                </div>
+                <div style="margin:10px">
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Gravar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@page
+@model MyStarterTemplate.Areas.Identity.Pages.Admin.Users.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>User Roles</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].Email)</th>
+            <th>Roles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UsersWithRoles)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => user.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        <span>@role</span>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Manage" asp-route-id="@user.UserId">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -9,7 +9,15 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a href="/Identity/Account/Register" target="_self">Registrar</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/Identity/Account/Logout" target="_self">Log out</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/Identity/Account/Login" target="_self">Log in</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">
