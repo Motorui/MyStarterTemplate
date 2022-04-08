@@ -1,27 +1,45 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>MyStarterTemplate</PageTitle>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="/Identity/Account/Register" target="_self">Registrar</a>
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudSpacer />
+        <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End">
             <AuthorizeView>
                 <Authorized>
-                    <a href="/Identity/Account/Logout" target="_self">Log out</a>
+                    <MudMenuItem>
+                        <MudNavLink Href="/Identity/Account/Logout">Logout</MudNavLink>
+                    </MudMenuItem>
                 </Authorized>
                 <NotAuthorized>
-                    <a href="/Identity/Account/Login" target="_self">Log in</a>
+                    <MudMenuItem>
+                        <MudNavLink Href="/Identity/Account/Login">Login</MudNavLink>
+                    </MudMenuItem>
                 </NotAuthorized>
             </AuthorizeView>
-        </div>
+        </MudMenu>
 
-        <article class="content px-4">
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="p-5">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

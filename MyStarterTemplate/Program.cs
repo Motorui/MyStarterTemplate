@@ -1,15 +1,19 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using MyStarterTemplate.Data;
 using MyStarterTemplate.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeAreaFolder("Identity", "/Admin", "adminsOnly");
+    options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
+});
+
 builder.Services.AddServerSideBlazor();
 
 // Add Identity services, order is important, factory first!
@@ -37,6 +41,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<AuthenticationStateProvider, 
     IdentityValidationProvider<IdentityUser>>();
+
+builder.Services.AddMudServices();
 
 builder.Services.AddSingleton<WeatherForecastService>();
 
