@@ -2,15 +2,25 @@
 @model MyStarterTemplate.Areas.Identity.Pages.Admin.Roles.CreateModel
 
 @{
-    ViewData["Title"] = "Create Role";
+    ViewData["Title"] = "Criar Role";
 }
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Funções</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a asp-page="./Index" role="button" class="btn btn-sm btn-outline-secondary">
+                <span class="btn-label"><i class="fa fa-rotate-left"></i></span> Voltar
+            </a>
+        </div>
 
-<h2>Create</h2>
+    </div>
+</div>
 
-<h4>ApplicationRole</h4>
+<h2>Criar função</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -19,13 +29,10 @@
                 <span asp-validation-for="Input.Role" class="text-danger"></span>
             </div>
 
-            <div style="margin:10px">
-                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Gravar</button>
-            </div>
+                <div style="margin:10px">
+                    <button id="submit" type="submit" class="w-100 btn btn-lg btn-primary">Gravar</button>
+                </div>
         </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>

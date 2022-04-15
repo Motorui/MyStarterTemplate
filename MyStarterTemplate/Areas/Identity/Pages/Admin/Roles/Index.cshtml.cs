@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MyStarterTemplate.Data;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Roles;
 
-public class IndexModel : PageModel
+public class IndexModel : BasePageModel
 {
     private readonly DataContext _context;
 
@@ -19,6 +17,6 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        IdentityRoles = await _context.Roles.ToListAsync();
+        IdentityRoles = await _context.Roles.OrderBy(n => n.Name).ToListAsync();
     }
 }

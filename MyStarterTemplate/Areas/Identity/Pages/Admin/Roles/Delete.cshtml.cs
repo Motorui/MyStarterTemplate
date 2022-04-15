@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MyStarterTemplate.Data;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Roles;
-public class DeleteModel : PageModel
+public class DeleteModel : BasePageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -48,6 +45,10 @@ public class DeleteModel : PageModel
 
             if (removeRoleResult.Succeeded)
             {
+                // valores possíveis: primary, secondary, success, danger, warning, info,
+                // light, dark, body, white, transparent
+                ToastType = "success";
+                ToastMessage = "Role apagado com sucesso!";
                 return RedirectToPage("./Index");
             }
         }

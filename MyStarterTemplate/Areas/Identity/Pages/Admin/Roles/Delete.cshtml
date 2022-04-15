@@ -1,40 +1,37 @@
 ﻿@page
-@model MyStarterTemplate.Areas.Identity.Pages.Admin.Roles.DeleteModel
+@using Microsoft.AspNetCore.Identity;
+@attribute [IgnoreAntiforgeryToken]
+@inject RoleManager<IdentityRole> _roleManager;
+@functions {
+    [TempData]
+    public string ToastType { get; set; } = string.Empty;
+    [TempData]
+    public string ToastMessage { get; set; } = string.Empty;
 
-@{
-    ViewData["Title"] = "Delete";
+    public async Task<IActionResult> OnGet(string id)
+    {
+        var role = await _roleManager.FindByIdAsync(id);
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        role = await _roleManager.FindByIdAsync(id);
+
+        if (role != null)
+        {
+            var removeRoleResult = await _roleManager.DeleteAsync(role);
+
+            if (removeRoleResult.Succeeded)
+            {
+                // valores possíveis: primary, secondary, success, danger, warning, info,
+                // light, dark, body, white, transparent
+                ToastType = "success";
+                ToastMessage = "Função apagada com sucesso!";
+                return RedirectToPage("./Index");
+            }
+        }
+
+        return Page();
+    }
 }
-
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>ApplicationRole</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.NormalizedName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.NormalizedName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.ConcurrencyStamp)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.ConcurrencyStamp)
-        </dd>
-    </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Role.Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
-</div>

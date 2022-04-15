@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MyStarterTemplate.Areas.Identity.ViewModels;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Users;
-public class IndexModel : PageModel
+public class IndexModel : BasePageModel
 {
     private readonly UserManager<IdentityUser> _userManager;
 
@@ -22,11 +20,13 @@ public class IndexModel : PageModel
 
         foreach (IdentityUser user in users)
         {
-            var thisViewModel = new UserRolesViewModel();
-            thisViewModel.UserId = user.Id;
-            thisViewModel.Email = user.Email;
-            thisViewModel.UserName = user.UserName;
-            thisViewModel.Roles = await GetUserRoles(user);
+            var thisViewModel = new UserRolesViewModel
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                Roles = await GetUserRoles(user)
+            };
             UsersWithRoles.Add(thisViewModel);
         }
     }

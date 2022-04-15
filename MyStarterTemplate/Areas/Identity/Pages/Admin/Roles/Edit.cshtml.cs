@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Roles;
-public class EditModel : PageModel
+public class EditModel : BasePageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     public EditModel(RoleManager<IdentityRole> roleManager)
@@ -44,9 +43,13 @@ public class EditModel : PageModel
 
                 if (updateRoleResult.Succeeded)
                 {
+                    // valores possíveis: primary, secondary, success, danger, warning, info,
+                    // light, dark, body, white, transparent
+                    ToastType = "success";
+                    ToastMessage = "Função editada com sucesso!";
                     return RedirectToPage("./Index");
                 }
-            }                    
+            }
         }
         return Page();
     }

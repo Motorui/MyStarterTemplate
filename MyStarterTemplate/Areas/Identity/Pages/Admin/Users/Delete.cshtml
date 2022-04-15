@@ -1,0 +1,34 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity;
+@attribute [IgnoreAntiforgeryToken]
+@inject UserManager<IdentityUser> UserManager;
+@inject RoleManager<IdentityRole> RoleManager;
+@functions {
+    [TempData]
+    public string ToastType { get; set; } = string.Empty;
+    [TempData]
+    public string ToastMessage { get; set; } = string.Empty;
+
+    public async Task<IActionResult> OnGet(string id)
+    {
+
+        var user = await UserManager.FindByIdAsync(id);
+        var roles = await UserManager.GetRolesAsync(user);
+        var result = await UserManager.RemoveFromRolesAsync(user, roles);
+
+        if (result.Succeeded)
+        {
+            var del = await UserManager.DeleteAsync(user);
+            if (del.Succeeded)
+            {
+                // valores possíveis: primary, secondary, success, danger, warning, info,
+                // light, dark, body, white, transparent
+                ToastType = "success";
+                ToastMessage = $"Utilizador {user.UserName} apagado com sucesso!";
+                return LocalRedirect("~/Identity/Admin/Users");
+            }
+        }
+
+        return Redirect("~/Identity/Admin/Users");
+    }
+}

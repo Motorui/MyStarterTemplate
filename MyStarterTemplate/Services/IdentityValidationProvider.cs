@@ -22,7 +22,7 @@ public class IdentityValidationProvider<TUser>
         _options = optionsAccessor.Value;
     }
 
-    protected override TimeSpan RevalidationInterval => TimeSpan.FromSeconds(60);
+    protected override TimeSpan RevalidationInterval => TimeSpan.FromSeconds(6000);
 
     protected override async Task<bool> ValidateAuthenticationStateAsync(
         AuthenticationState authenticationState, CancellationToken cancellationToken)

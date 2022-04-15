@@ -2,36 +2,53 @@
 @model MyStarterTemplate.Areas.Identity.Pages.Admin.Roles.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Função detalhes";
 }
 
-<h2>Details</h2>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Funções</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a asp-page="./Index" role="button" class="btn btn-sm btn-outline-secondary">
+                <span class="btn-label"><i class="fa fa-rotate-left"></i></span> Voltar
+            </a>
+        </div>
 
-<div>
-    <h4>ApplicationRole</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.NormalizedName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.NormalizedName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Role.ConcurrencyStamp)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role.ConcurrencyStamp)
-        </dd>
-    </dl>
+    </div>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Role.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Role.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Role.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Role.NormalizedName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Role.NormalizedName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Role.ConcurrencyStamp)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Role.ConcurrencyStamp)
+                </dd>
+            </dl>
+
+            <div>
+                <a asp-page="./Edit" asp-route-id="@Model.Role.Id" class="btn btn-sm btn-outline-success">
+                    <span class="btn-label"><i class="fa fa-pencil"></i></span> Editar
+                </a>
+                <a asp-page="./Index" role="button" class="btn btn-sm btn-outline-secondary">
+                    <span class="btn-label"><i class="fa fa-rotate-left"></i></span> Voltar
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

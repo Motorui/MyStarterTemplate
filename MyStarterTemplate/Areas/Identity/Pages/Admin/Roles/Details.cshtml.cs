@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Roles;
 
-public class DetailsModel : PageModel
+public class DetailsModel : BasePageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     public DetailsModel(RoleManager<IdentityRole> roleManager)

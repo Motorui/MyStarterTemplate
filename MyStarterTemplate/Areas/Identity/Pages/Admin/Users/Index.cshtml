@@ -1,34 +1,101 @@
 ﻿@page
+
 @model IndexModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Utilizadores";
+    var ToastType = TempData["ToastType"];
+    var ToastMessage = TempData["ToastMessage"];
 }
-<h1>User Roles</h1>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].UserName)</th>
-            <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].Email)</th>
-            <th>Roles</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.UsersWithRoles)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => user.UserName)</td>
-                <td>@Html.DisplayFor(modelItem => user.Email)</td>
-                <td>
-                    @foreach (var role in user.Roles)
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Utilizadores</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a asp-page="./Register" role="button" class="btn btn-sm btn-outline-secondary">
+                <span class="btn-label"><i class="fa fa-plus"></i></span> Novo
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <h2>Listagem</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].UserName)</th>
+                        <th>@Html.DisplayNameFor(model => model.UsersWithRoles[0].Email)</th>
+                        <th>Roles</th>
+                        <th>Menu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.UsersWithRoles)
                     {
-                        <span>@role</span>
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => user.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    <span class="badge rounded-pill bg-info text-dark">@role</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-page="./EditUser" asp-route-id="@user.UserId" class="btn btn-sm btn-outline-success">
+                                    <span class="btn-label"><i class="fa fa-pencil"></i></span> Editar
+                                </a>
+                                <a asp-page="./Manage" asp-route-id="@user.UserId" role="button" class="btn btn-sm btn-outline-success">
+                                    <span class="btn-label"><i class="fa fa-plus"></i></span> Roles
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#@user.UserName">
+                                    <span class="btn-label"><i class="fa fa-trash"></i></span> Del
+                                </button>
+                                <!-- Modal -->
+                            <div class="modal fade" id="@user.UserName" data-bs-backdrop="static" data-bs-keyboard="false"
+                                 tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content bg-warning bg-gradient fw-bold">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirma?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Deseja apagar o utilizador @user.UserName?</p>
+                                                Esta ação não pode ser desfeita!
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a asp-page="./Delete" asp-route-id="@user.UserId" role="button" class="btn btn-sm btn-danger">
+                                                    <span class="btn-label"><i class="fa fa-trash"></i></span> Apagar
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                                                    <span class="btn-label"><i class="fa fa-rotate-left"></i></span> Voltar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                </td>
-                <td>
-                    <a asp-page="./Manage" asp-route-id="@user.UserId">Manage Roles</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (ToastType != null && ToastMessage != null)
+{
+    @section scripts {
+<script type="text/javascript">
+    var successToastMessage = document.getElementById('toastMessage')
+    var toast = new bootstrap.Toast(successToastMessage)
+    toast.show()
+</script>
+
+    }
+}

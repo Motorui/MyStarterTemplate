@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Roles;
 
-public class CreateModel : PageModel
+public class CreateModel : BasePageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     public CreateModel( RoleManager<IdentityRole> roleManager)
@@ -19,7 +18,6 @@ public class CreateModel : PageModel
 
     [BindProperty]
     public InputModel Input { get; set; } = new InputModel();
-    public string ReturnUrl { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -30,6 +28,10 @@ public class CreateModel : PageModel
 
             if (addRoleResult.Succeeded)
             {
+                // valores possíveis: primary, secondary, success, danger, warning, info,
+                // light, dark, body, white, transparent
+                ToastType = "success";
+                ToastMessage = "Função criada com sucesso!";
                 return RedirectToPage("./Index");
             }           
         }

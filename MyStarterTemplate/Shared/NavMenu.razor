@@ -1,8 +1,9 @@
-﻿<MudNavMenu>
+﻿
+<MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All">Home</MudNavLink>
     <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix">Counter</MudNavLink>
     <MudNavLink Href="/fetchdata" Match="NavLinkMatch.Prefix">Fetch data</MudNavLink>
-    <AuthorizeView>
+    <AuthorizeView Roles="Admin">
         <Authorized>
             <MudNavGroup Title="Settings" Expanded="true">
                 <MudNavLink Href="Identity/Admin/Users" Match="NavLinkMatch.Prefix">User Manegement</MudNavLink>

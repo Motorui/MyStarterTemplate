@@ -29,7 +29,7 @@ public class LoginModel : PageModel
         if (ModelState.IsValid)
         {
             var result = await _signInManager.PasswordSignInAsync(Input.Username,
-                Input.Password, false, lockoutOnFailure: false);
+                Input.Password, true, lockoutOnFailure: false);
             if (result.Succeeded) return LocalRedirect(ReturnUrl);
         }
 

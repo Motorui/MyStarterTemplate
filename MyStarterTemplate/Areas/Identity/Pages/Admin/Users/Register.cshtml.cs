@@ -1,54 +1,57 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyStarterTemplate.Areas.Identity.ViewModels;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace MyStarterTemplate.Areas.Identity.Pages.Admin.Users;
 
-public class RegisterModel : PageModel
+public class RegisterModel : BasePageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    public RegisterModel(SignInManager<IdentityUser> signInManager, 
-        UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public RegisterModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        _signInManager = signInManager;
         _userManager = userManager;
         _roleManager = roleManager;
     }
 
     [BindProperty]
     public InputModel Input { get; set; } = new InputModel();
-    public string ReturnUrl { get; set; } = string.Empty;
+    [BindProperty]
+    public IList<ManageUserRolesViewModel> UserRoles { get; set; } = new List<ManageUserRolesViewModel>();
 
     public void OnGet()
     {
-        ReturnUrl = Url.Content("~/");
+
+        foreach (var role in _roleManager.Roles.ToList())
+        {
+            var userRole = new ManageUserRolesViewModel
+            {
+                RoleId = role.Id,
+                RoleName = role.Name,
+                Selected = false
+            };
+            UserRoles.Add(userRole);
+        }
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        ReturnUrl = Url.Content("~/");
+
         if (ModelState.IsValid)
         {
-            var identity = new IdentityUser {UserName = Input.Username, Email = Input.Email };
+            var identity = new IdentityUser { UserName = Input.Username, Email = Input.Email };
             var result = await _userManager.CreateAsync(identity, Input.Password);
 
-            var claim = new Claim("uh", Input.UnidadeDeHandling.ToUpper());
-            var claimsResult = await _userManager.AddClaimAsync(identity, claim);
+            var addUserRoleResult = await _userManager.AddToRolesAsync(identity, UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
 
-            var role = new IdentityRole(Input.Role);
-            var addRoleResult = await _roleManager.CreateAsync(role);
-
-            var addUserRoleResult = await _userManager.AddToRoleAsync(identity, Input.Role);
-
-            if (result.Succeeded && claimsResult.Succeeded 
-                && addRoleResult.Succeeded && addUserRoleResult.Succeeded)
+            if (result.Succeeded && addUserRoleResult.Succeeded)
             {
-                await _signInManager.SignInAsync(identity, isPersistent: false);
-                return LocalRedirect(ReturnUrl);
+                // valores possíveis: primary, secondary, success, danger, warning, info,
+                // light, dark, body, white, transparent
+                ToastType = "success";
+                ToastMessage = $"Utilizador {identity.UserName} criado com sucesso!";
+                return LocalRedirect("~/Identity/Admin/Users");
             }
         }
 
@@ -65,9 +68,5 @@ public class RegisterModel : PageModel
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
-        [Required]
-        public string  UnidadeDeHandling { get; set; } = string.Empty;
-        [Required]
-        public string Role { get; set; } = string.Empty;
     }
 }
