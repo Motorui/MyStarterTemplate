@@ -154,6 +154,26 @@ namespace MyStarterTemplate.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2301D884-221A-4E7D-B509-0113DCC043E1", "206a401d-ca2e-4aba-a7bb-2a91a5011b5b", "Admin", "ADMIN" },
+                    { "78A7570F-3CE5-48BA-9461-80283ED1D94D", "190e635d-5998-48dc-96f4-e055e1afc3a3", "Consultor", "CONSULTOR" },
+                    { "7D9B7113-A8F8-4035-99A7-A20DD400F6A3", "f5f98b93-09e2-42f9-a3d2-7ee2fd383802", "Utilizador", "UTILIZADOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "B22698B8-42A2-4115-9631-1C2D1E2AC5F7", 0, "fa43032a-8798-4174-9a47-723f69895d92", "rui.santos@portway.pt", true, false, null, "RUI.SANTOS@PORTWAY.PT", "RAPEREIRA", "AQAAAAEAACcQAAAAEKK9Xf4Bc0WQH/RiHSsZdJNzE9y9LbgRtcrfa112ibuYqikJW2mx3KyNzlqmbMHyBg==", "XXXXXXXXXXXXX", true, "00000000-0000-0000-0000-000000000000", false, "rapereira" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2301D884-221A-4E7D-B509-0113DCC043E1", "B22698B8-42A2-4115-9631-1C2D1E2AC5F7" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

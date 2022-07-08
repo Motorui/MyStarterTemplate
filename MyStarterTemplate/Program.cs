@@ -17,22 +17,43 @@ builder.Services.AddRazorPages(options =>
 builder.Services.AddServerSideBlazor();
 
 // Add Identity services, order is important, factory first!
-var cs = builder.Configuration.GetConnectionString("DefaultConnection"); 
+var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContextFactory<DataContext>(options => options.UseSqlServer(cs));
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(cs));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.SignIn.RequireConfirmedEmail = false;
-})
-    .AddRoles<IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<DataContext>()
     .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>(TokenOptions.DefaultProvider);
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 4;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+    options.Lockout.MaxFailedAccessAttempts = 10;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = false;
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -40,7 +61,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("adminsOnly", policy => policy.RequireRole("Admin"));
 });
 
-builder.Services.AddScoped<AuthenticationStateProvider, 
+builder.Services.AddScoped<AuthenticationStateProvider,
     IdentityValidationProvider<IdentityUser>>();
 
 builder.Services.AddMudServices();
